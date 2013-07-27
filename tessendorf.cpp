@@ -18,7 +18,7 @@ tessendorf::tessendorf(double height, double speed, MVector direction, double ch
     V = speed;
     w_hat = direction.normal();
     t = time;
-    chop = choppiness;
+    lambda = choppiness;
     M = resX;
     N = resZ;
     Lx = scaleX;
@@ -98,8 +98,8 @@ void tessendorf::simulate()
             
             MVector k_hat = k.normal();
             
-            disp_x_in[index] = complex(0., k_hat.x) * h_tilde_k;
-            disp_z_in[index] = complex(0., k_hat.z) * h_tilde_k;
+            disp_x_in[index] = complex(0., -k_hat.x) * h_tilde_k; // Displacement by equation (29).
+            disp_z_in[index] = complex(0., -k_hat.z) * h_tilde_k;
         }
     }
     
@@ -118,9 +118,9 @@ void tessendorf::simulate()
             int m_ = m - M / 2;  // m coord offsetted.
             int n_ = n - N / 2;  // n coord offsetted.
             
-            MFloatVector x(n_ * Lx / N + real(disp_x_in[index]) * chop * sign,
+            MFloatVector x(n_ * Lx / N + real(disp_x_in[index]) * lambda * sign,
                            real(h_tildes_out[index]) * sign,
-                           m_ * Lz / M + real(disp_z_in[index]) * chop * sign);
+                           m_ * Lz / M + real(disp_z_in[index]) * lambda * sign);
             vertices.append(x);
         }
     }

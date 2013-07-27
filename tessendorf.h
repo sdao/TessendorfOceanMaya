@@ -29,7 +29,7 @@ class tessendorf {
     double A;                       // Controls height of Phillips spectrum.
     double V;                       // Wind speed (in m/s).
     MVector w_hat;                  // Direction of wind.
-    double chop;                    // Choppiness factor.
+    double lambda;                  // Choppiness factor.
     double t;                       // Time (s).
     int seed;                       // Seed for the PRNG.
     
