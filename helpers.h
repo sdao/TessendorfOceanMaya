@@ -15,16 +15,6 @@
  * Math helper functions *
  *************************/
 
-static double sin_d(const double deg)
-{
-    return sin(deg * M_PI / 180.);
-}
-
-static double cos_d(const double deg)
-{
-    return cos(deg * M_PI / 180.);
-}
-
 /*!
  * A function to compute a value with a random Gaussian distribution, mean 0, standard deviation 1.
  * Based on the Abramowitz and Stegun method; this is the code given in the comp.lang.c FAQ.

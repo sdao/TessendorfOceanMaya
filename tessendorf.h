@@ -26,19 +26,18 @@ class tessendorf {
     int N;                          // Resolution of grid along Z-axis (16 <= N <= 2048; where N = 2^z for integer z).
     double Lx;                      // Length of plane along X-axis (m).
     double Lz;                      // Length of plane along Z-axis (m).
+    double l;                       // Size limit that waves must surpass to be rendered.
     double A;                       // Controls height of Phillips spectrum.
     double V;                       // Wind speed (in m/s).
     MVector w_hat;                  // Direction of wind.
     double lambda;                  // Choppiness factor.
     double t;                       // Time (s).
     int seed;                       // Seed for the PRNG.
-    
-public:
     MFloatPointArray vertices;
     
 public:
-    tessendorf(double height, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, int rngSeed);
-    void                    simulate();
+    tessendorf(double amplitude, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, double waveSizeLimit, int rngSeed);
+    MFloatPointArray    simulate();
     
 private:
     double     omega(MVector k);  // Wave dispersion.

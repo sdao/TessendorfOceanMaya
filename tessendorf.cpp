@@ -12,9 +12,9 @@
 #include <maya/MGlobal.h>
 #include <sstream>
 
-tessendorf::tessendorf(double height, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, int rngSeed)
+tessendorf::tessendorf(double amplitude, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, double waveSizeLimit, int rngSeed)
 {
-    A = height;
+    A = amplitude;
     V = speed;
     w_hat = direction.normal();
     t = time;
@@ -23,6 +23,7 @@ tessendorf::tessendorf(double height, double speed, MVector direction, double ch
     N = resZ;
     Lx = scaleX;
     Lz = scaleZ;
+    l = waveSizeLimit;
     seed = rngSeed;
 }
 
@@ -44,8 +45,9 @@ double tessendorf::P_h(MVector k)
     
     double nomin = exp(-1. / pow(k_length * L, 2));
     double denom = pow(k_length, 4);
+    double scale = exp(-pow(k_length, 2) * pow(l, 2));
     
-    return A * nomin / denom * pow(k_hat * w_hat, 2);
+    return A * nomin / denom * pow(k_hat * w_hat, 2) * scale;
 }
 
 complex tessendorf::h_tilde_0(MVector k)
@@ -71,7 +73,7 @@ complex tessendorf::h_tilde(MVector k)
     return h_tilde_0_k * c0 + h_tilde_0_k_star * c1;
 }
 
-void tessendorf::simulate()
+MFloatPointArray tessendorf::simulate()
 {
     srand(seed);
     vertices.clear();
@@ -124,6 +126,8 @@ void tessendorf::simulate()
             vertices.append(x);
         }
     }
+    
+    return vertices;
 }
 
 /*
