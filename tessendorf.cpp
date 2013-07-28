@@ -99,7 +99,6 @@ MFloatPointArray tessendorf::simulate()
             h_tildes_in[index] = h_tilde_k;
             
             MVector k_hat = k.normal();
-            
             disp_x_in[index] = complex(0., -k_hat.x) * h_tilde_k; // Displacement by equation (29).
             disp_z_in[index] = complex(0., -k_hat.z) * h_tilde_k;
         }
@@ -120,9 +119,9 @@ MFloatPointArray tessendorf::simulate()
             int m_ = m - M / 2;  // m coord offsetted.
             int n_ = n - N / 2;  // n coord offsetted.
             
-            MFloatVector x(n_ * Lx / N + real(disp_x_in[index]) * lambda * sign,
+            MFloatVector x(n_ * Lx / N + real(disp_x_out[index]) * lambda * sign,
                            real(h_tildes_out[index]) * sign,
-                           m_ * Lz / M + real(disp_z_in[index]) * lambda * sign);
+                           m_ * Lz / M + real(disp_z_out[index]) * lambda * sign);
             vertices.append(x);
         }
     }

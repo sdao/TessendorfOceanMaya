@@ -107,7 +107,7 @@ MStatus tessendorfOcean::initialize()
     
     // Resolution (powers of 2 between 16 and 2048)
     tessendorfOcean::resolution = numAttr.create( "resolution", "res",
-                                               MFnNumericData::kInt, 6 );
+                                               MFnNumericData::kInt, 8 );
     numAttr.setMin(4);
     numAttr.setMax(11);
     addAttribute(tessendorfOcean::resolution);
@@ -135,7 +135,7 @@ MStatus tessendorfOcean::initialize()
     
     // Wind speed
     tessendorfOcean::windSpeed = numAttr.create( "windSpeed", "ws",
-                                              MFnNumericData::kDouble, 3. );
+                                              MFnNumericData::kDouble, 2. );
     numAttr.setMin(0.);
     numAttr.setMax(20.);
     addAttribute(tessendorfOcean::windSpeed);
@@ -234,10 +234,10 @@ MObject tessendorfOcean::createMesh(const MTime& time,
 	{
 		for (j = 0; j < faceResolution; ++j)
 		{
-			faceVertices.append(i * vertexResolution + j);
-			faceVertices.append(i * vertexResolution + j + 1);
-			faceVertices.append((i+1) * vertexResolution + j + 1);
 			faceVertices.append((i+1) * vertexResolution + j);
+			faceVertices.append((i+1) * vertexResolution + j + 1);
+			faceVertices.append(i * vertexResolution + j + 1);
+			faceVertices.append(i * vertexResolution + j);
 		}
 	}
     
