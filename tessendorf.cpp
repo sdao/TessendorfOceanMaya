@@ -14,6 +14,7 @@
 
 tessendorf::tessendorf(double amplitude, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, double waveSizeLimit, int rngSeed)
 {
+    // Parameters.
     A = amplitude;
     V = speed;
     w_hat = direction.normal();
@@ -25,6 +26,10 @@ tessendorf::tessendorf(double amplitude, double speed, MVector direction, double
     Lz = scaleZ;
     l = waveSizeLimit;
     seed = rngSeed;
+    
+    // Precalculate known constants.
+    P_h__L = pow(V, 2) / GRAVITY;
+    P_h__l_2 = pow(l, 2);
 }
 
 double tessendorf::omega(MVector k)
@@ -37,15 +42,14 @@ double tessendorf::P_h(MVector k)
     double k_length = k.length();
     
     if (k_length < DBL_EPSILON) {
-        return 0.; // Avoid divison by zero error;
+        return 0.; // Avoid divison by zero error.
     }
     
-    double L = pow(V, 2) / GRAVITY;
     MVector k_hat = k.normal();
     
-    double nomin = exp(-1. / pow(k_length * L, 2));
+    double nomin = exp(-1. / pow(k_length * P_h__L, 2));
     double denom = pow(k_length, 4);
-    double scale = exp(-pow(k_length, 2) * pow(l, 2));
+    double scale = exp(-pow(k_length, 2) * P_h__l_2);
     
     return A * nomin / denom * pow(k_hat * w_hat, 2) * scale;
 }

@@ -35,6 +35,10 @@ class tessendorf {
     int seed;                       // Seed for the PRNG.
     MFloatPointArray vertices;
     
+    // Values precached on initialization.
+    double P_h__L;                  // Largest possible waves arising from a continuous wind of speed V.
+    double P_h__l_2;                // Square of l (size limit).
+    
 public:
     tessendorf(double amplitude, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, double waveSizeLimit, int rngSeed);
     MFloatPointArray    simulate();
