@@ -1,5 +1,12 @@
-//-
+//
+//  tessendorfOceanNode.h
+//  TessendorfOceanNode
+//
+//  Created by Steven Dao on 7/24/13.
+//
+//
 // ==========================================================================
+// This file is based on the sample file [animCubeNode.cpp] in the Maya SDK.
 // Copyright 1995,2006,2008 Autodesk, Inc. All rights reserved.
 //
 // Use of this software is subject to the terms of the Autodesk
@@ -7,7 +14,6 @@
 // or which otherwise accompanies this software in either electronic
 // or hard copy form.
 // ==========================================================================
-//+
 
 #include <maya/MGlobal.h>
 
