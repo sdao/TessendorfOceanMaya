@@ -204,7 +204,6 @@ MObject tessendorfOcean::createMesh(const MTime& time,
     
     // Convert wind direction to a unit vector.
     double dirRadians = windDirection.asRadians();
-    MGlobal::displayInfo( MString("rad ") + dirRadians);
     MVector dirVector = MVector(cos(dirRadians), 0., sin(dirRadians));
     
     // tessendorf(double amplitude, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, int rngSeed);

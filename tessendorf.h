@@ -20,7 +20,7 @@ typedef std::complex<double> complex;
 
 class tessendorf {
     // Instance variables.
-    double T = 200.;                // Time of one phase of simulation.
+    double T = 240.;                // Time of one phase of simulation (currently 4'0").
     double omega_0 = 2. * M_PI / T; // Dispersion 0.
     int M;                          // Resolution of grid along X-axis (16 <= M <= 2048; where M = 2^x for integer x).
     int N;                          // Resolution of grid along Z-axis (16 <= N <= 2048; where N = 2^z for integer z).
