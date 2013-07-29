@@ -47,6 +47,9 @@ cerr << msg;                    \
 return MS::kFailure;            \
 }
 
+/**
+ * A Maya node that creates an ocean wave simulation using Tessendorf's FFT method.
+ */
 class tessendorfOcean : public MPxNode
 {
 public:
@@ -56,19 +59,34 @@ public:
 	static  void*	creator();
 	static  MStatus initialize();
     
-	static MObject	time;
-    static MObject  resolution;     // int
-    static MObject  planeSize;      // double
-    static MObject  waveSizeFilter;       // double
-    static MObject  amplitude;      // double
-    static MObject  windSpeed;      // double
-    static MObject  windDirection;  // MVector
-    static MObject  choppiness;     // double
-    static MObject  seed;           // int
+	static MObject	time;           /** MTime attribute; the time passed in the simulation. */
+    static MObject  resolution;     /** int attribute; the number of vertices per row or column. */
+    static MObject  planeSize;      /** int attribute; the length or width of the ocean plane. */
+    static MObject  waveSizeFilter; /** double attribute; waves smaller than this size are hidden. */
+    static MObject  amplitude;      /** double attribute; determines the height of the waves. */
+    static MObject  windSpeed;      /** double attribute; the speed of waves. */
+    static MObject  windDirection;  /** MVector attribute; the direction of the wave movement. */
+    static MObject  choppiness;     /** double attribute; higher value is choppier. */
+    static MObject  seed;           /** int attribute; seed for the pseudorandom number generator. */
 	static MObject	outputMesh;
 	static MTypeId	id;
     
 protected:
+    /**
+     * Generates an output mesh given the specified wave simulation parameters.
+     *
+     * \param time the time passed in the simulation
+     * \param vertexResolution the number of vertices per row or column
+     * \param planeSize the length or width of the ocean plane
+     * \param waveSizeFilter waves smaller than this size are hidden
+     * \param amplitude determines the height of the waves
+     * \param windSpeed the speed of waves
+     * \param windDirection the direction of the wave movement
+     * \param choppiness higher value is choppier
+     * \param seed seed for the pseudorandom number generator
+     * \param the object reference to the output mesh data
+     * \return the output mesh
+     */
 	MObject createMesh(const MTime& time,
                        const int vertexResolution,
                        const double planeSize,

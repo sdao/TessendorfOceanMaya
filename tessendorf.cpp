@@ -132,9 +132,3 @@ MFloatPointArray tessendorf::simulate()
     
     return vertices;
 }
-
-/*
- {
- return MVector(2. * M_PI * n / Lx, 0., 2. * M_PI * m / Lz);
- }
- */
