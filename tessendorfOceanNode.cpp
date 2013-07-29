@@ -42,7 +42,7 @@
 #include "tessendorf.h"
 
 #define MCheckErr(stat,msg)     \
-if ( MS::kSuccess != stat ) {	\
+if (MS::kSuccess != stat) {	\
 cerr << msg;                    \
 return MS::kFailure;            \
 }
@@ -110,7 +110,7 @@ MObject tessendorfOcean::windDirection;
 MObject tessendorfOcean::choppiness;
 MObject tessendorfOcean::seed;
 MObject tessendorfOcean::outputMesh;
-MTypeId tessendorfOcean::id( 0x12345 );
+MTypeId tessendorfOcean::id(0x12345);
 
 void* tessendorfOcean::creator()
 {
@@ -124,68 +124,57 @@ MStatus tessendorfOcean::initialize()
     MFnNumericAttribute numAttr;
     
     // Time
-	tessendorfOcean::time = unitAttr.create( "time", "tm",
-                                  MFnUnitAttribute::kTime,
-                                          0.0 );
+	tessendorfOcean::time = unitAttr.create("time", "tm", MFnUnitAttribute::kTime, 0.0);
 	addAttribute(tessendorfOcean::time);
     
     // Resolution (powers of 2 between 16 and 2048)
-    tessendorfOcean::resolution = numAttr.create( "resolution", "res",
-                                               MFnNumericData::kInt, 8 );
+    tessendorfOcean::resolution = numAttr.create("resolution", "res", MFnNumericData::kInt, 8);
     numAttr.setMin(4);
     numAttr.setMax(11);
     addAttribute(tessendorfOcean::resolution);
     
     // Plane size
-    tessendorfOcean::planeSize = numAttr.create( "planeSize", "psz",
-                                              MFnNumericData::kDouble, 100. );
+    tessendorfOcean::planeSize = numAttr.create("planeSize", "psz", MFnNumericData::kDouble, 100.);
     numAttr.setMin(10.);
     numAttr.setMax(500.);
     addAttribute(tessendorfOcean::planeSize);
     
     // Wave size
-    tessendorfOcean::waveSizeFilter = numAttr.create( "waveSizeFilter", "wsz",
-                                                MFnNumericData::kDouble, 1. );
+    tessendorfOcean::waveSizeFilter = numAttr.create("waveSizeFilter", "wsz", MFnNumericData::kDouble, 1.);
     numAttr.setMin(0.);
     numAttr.setMax(50.);
     addAttribute(tessendorfOcean::waveSizeFilter);
     
     // Amplitude <= 1.0
-    tessendorfOcean::amplitude = numAttr.create( "amplitude", "a",
-                                              MFnNumericData::kDouble, 0.001 );
+    tessendorfOcean::amplitude = numAttr.create("amplitude", "a", MFnNumericData::kDouble, 0.001);
     numAttr.setMin(0.);
     numAttr.setMax(0.1);
     addAttribute(tessendorfOcean::amplitude);
     
     // Wind speed
-    tessendorfOcean::windSpeed = numAttr.create( "windSpeed", "ws",
-                                              MFnNumericData::kDouble, 2. );
+    tessendorfOcean::windSpeed = numAttr.create("windSpeed", "ws", MFnNumericData::kDouble, 2.);
     numAttr.setMin(0.);
     numAttr.setMax(20.);
     addAttribute(tessendorfOcean::windSpeed);
     
     // Wind direction (degrees)
-    tessendorfOcean::windDirection = unitAttr.create( "windDirection", "wd",
-                                                     MAngle(0.) );
+    tessendorfOcean::windDirection = unitAttr.create("windDirection", "wd", MAngle(0.));
     numAttr.setSoftMin(0.);
     numAttr.setSoftMax(2 * M_PI);
     addAttribute(tessendorfOcean::windDirection);
     
     // Choppiness
-    tessendorfOcean::choppiness = numAttr.create( "choppiness", "c",
-                                                MFnNumericData::kDouble, 0.5 );
+    tessendorfOcean::choppiness = numAttr.create("choppiness", "c", MFnNumericData::kDouble, 0.5);
     numAttr.setMin(0.);
     numAttr.setMax(2.);
     addAttribute(tessendorfOcean::choppiness);
     
     // Seed for PRNG
-    tessendorfOcean::seed = numAttr.create( "seed", "seed",
-                                                 MFnNumericData::kInt, 1 );
+    tessendorfOcean::seed = numAttr.create("seed", "seed", MFnNumericData::kInt, 1);
     addAttribute(tessendorfOcean::seed);
     
     // Output mesh
-    tessendorfOcean::outputMesh = typedAttr.create( "outputMesh", "out",
-                                                 MFnData::kMesh );
+    tessendorfOcean::outputMesh = typedAttr.create("outputMesh", "out", MFnData::kMesh);
 	typedAttr.setStorable(false);
 	addAttribute(tessendorfOcean::outputMesh);
     
@@ -224,7 +213,7 @@ MObject tessendorfOcean::createMesh(const MTime& time,
 	int numFaces = faceResolution * faceResolution;
     
 	// Scale using the current time.
-	double seconds = time.as( MTime::kSeconds );
+	double seconds = time.as(MTime::kSeconds);
     
     // Convert wind direction to a unit vector.
     double dirRadians = windDirection.asRadians();
@@ -277,47 +266,47 @@ MStatus tessendorfOcean::compute(const MPlug& plug, MDataBlock& data)
     
 	if (plug == outputMesh) {
 		// Get the time attribute.
-		MDataHandle timeData = data.inputValue( time, &returnStatus );
+		MDataHandle timeData = data.inputValue(time, &returnStatus);
 		MCheckErr(returnStatus, "ERROR getting time data handle\n");
 		MTime time = timeData.asTime();
         
         // Get the resolution attribute.
-        MDataHandle resData = data.inputValue( resolution, &returnStatus );
+        MDataHandle resData = data.inputValue(resolution, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting resolution data handle\n");
         int res = pow(2, resData.asInt());
         
         // Get the planeSize attribute.
-        MDataHandle sizeData = data.inputValue( planeSize, &returnStatus );
+        MDataHandle sizeData = data.inputValue(planeSize, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting planeSize data handle\n");
         double size = sizeData.asDouble();
         
         // Get the waveSizeFilter attribute.
-        MDataHandle wSizeData = data.inputValue( waveSizeFilter, &returnStatus );
+        MDataHandle wSizeData = data.inputValue(waveSizeFilter, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting waveSizeFilter data handle\n");
         double wSize = wSizeData.asDouble();
         
         // Get the amplitude attribute.
-        MDataHandle ampData = data.inputValue( amplitude, &returnStatus );
+        MDataHandle ampData = data.inputValue(amplitude, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting amplitude data handle\n");
         double amp = ampData.asDouble();
         
         // Get the windSpeed attribute.
-        MDataHandle windSpeedData = data.inputValue( windSpeed, &returnStatus );
+        MDataHandle windSpeedData = data.inputValue(windSpeed, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting windSpeed data handle\n");
         double speed = windSpeedData.asDouble();
         
         // Get the windDirection attribute.
-        MDataHandle windDirectionData = data.inputValue( windDirection, &returnStatus );
+        MDataHandle windDirectionData = data.inputValue(windDirection, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting windDirection data handle\n");
         MAngle dir = windDirectionData.asAngle();
         
         // Get the choppiness attribute.
-        MDataHandle chopData = data.inputValue( choppiness, &returnStatus );
+        MDataHandle chopData = data.inputValue(choppiness, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting choppiness data handle\n");
         double chop = chopData.asDouble();
         
         // Get the seed attribute.
-        MDataHandle seedData = data.inputValue( seed, &returnStatus );
+        MDataHandle seedData = data.inputValue(seed, &returnStatus);
         MCheckErr(returnStatus, "ERROR getting seed data handle\n");
         int rngSeed = seedData.asInt();
         
@@ -333,7 +322,7 @@ MStatus tessendorfOcean::compute(const MPlug& plug, MDataBlock& data)
 		MCheckErr(returnStatus, "ERROR creating new tessendorfOcean");
         
 		outputHandle.set(newOutputData);
-		data.setClean( plug );
+		data.setClean(plug);
 	} else
 		return MS::kUnknownParameter;
     
