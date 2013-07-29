@@ -54,12 +54,12 @@ class tessendorfOcean : public MPxNode
 {
 public:
     tessendorfOcean() {};
-	virtual 		~tessendorfOcean() {};
-	virtual MStatus compute(const MPlug& plug, MDataBlock& data);
-	static  void*	creator();
-	static  MStatus initialize();
+    virtual         ~tessendorfOcean() {};
+    virtual MStatus compute(const MPlug& plug, MDataBlock& data);
+    static  void*   creator();
+    static  MStatus initialize();
     
-	static MObject	time;           /** MTime attribute; the time passed in the simulation. */
+    static MObject  time;           /** MTime attribute; the time passed in the simulation. */
     static MObject  resolution;     /** int attribute; the number of vertices per row or column. */
     static MObject  planeSize;      /** int attribute; the length or width of the ocean plane. */
     static MObject  waveSizeFilter; /** double attribute; waves smaller than this size are hidden. */
@@ -68,8 +68,8 @@ public:
     static MObject  windDirection;  /** MVector attribute; the direction of the wave movement. */
     static MObject  choppiness;     /** double attribute; higher value is choppier. */
     static MObject  seed;           /** int attribute; seed for the pseudorandom number generator. */
-	static MObject	outputMesh;
-	static MTypeId	id;
+    static MObject  outputMesh;
+    static MTypeId  id;
     
 protected:
     /**
@@ -87,7 +87,7 @@ protected:
      * \param the object reference to the output mesh data
      * \return the output mesh
      */
-	MObject createMesh(const MTime& time,
+    MObject createMesh(const MTime& time,
                        const int vertexResolution,
                        const double planeSize,
                        const double waveSizeFilter,
@@ -114,18 +114,18 @@ MTypeId tessendorfOcean::id(0x12345);
 
 void* tessendorfOcean::creator()
 {
-	return new tessendorfOcean;
+    return new tessendorfOcean;
 }
 
 MStatus tessendorfOcean::initialize()
 {
-	MFnUnitAttribute unitAttr;
-	MFnTypedAttribute typedAttr;
+    MFnUnitAttribute unitAttr;
+    MFnTypedAttribute typedAttr;
     MFnNumericAttribute numAttr;
     
     // Time
-	tessendorfOcean::time = unitAttr.create("time", "tm", MFnUnitAttribute::kTime, 0.0);
-	addAttribute(tessendorfOcean::time);
+    tessendorfOcean::time = unitAttr.create("time", "tm", MFnUnitAttribute::kTime, 0.0);
+    addAttribute(tessendorfOcean::time);
     
     // Resolution (powers of 2 between 16 and 2048)
     tessendorfOcean::resolution = numAttr.create("resolution", "res", MFnNumericData::kInt, 8);
@@ -175,11 +175,11 @@ MStatus tessendorfOcean::initialize()
     
     // Output mesh
     tessendorfOcean::outputMesh = typedAttr.create("outputMesh", "out", MFnData::kMesh);
-	typedAttr.setStorable(false);
-	addAttribute(tessendorfOcean::outputMesh);
+    typedAttr.setStorable(false);
+    addAttribute(tessendorfOcean::outputMesh);
     
-	attributeAffects(tessendorfOcean::time, tessendorfOcean::outputMesh);
-	attributeAffects(tessendorfOcean::resolution, tessendorfOcean::outputMesh);
+    attributeAffects(tessendorfOcean::time, tessendorfOcean::outputMesh);
+    attributeAffects(tessendorfOcean::resolution, tessendorfOcean::outputMesh);
     attributeAffects(tessendorfOcean::planeSize, tessendorfOcean::outputMesh);
     attributeAffects(tessendorfOcean::waveSizeFilter, tessendorfOcean::outputMesh);
     attributeAffects(tessendorfOcean::amplitude, tessendorfOcean::outputMesh);
@@ -188,7 +188,7 @@ MStatus tessendorfOcean::initialize()
     attributeAffects(tessendorfOcean::choppiness, tessendorfOcean::outputMesh);
     attributeAffects(tessendorfOcean::seed, tessendorfOcean::outputMesh);
     
-	return MS::kSuccess;
+    return MS::kSuccess;
 }
 
 MObject tessendorfOcean::createMesh(const MTime& time,
@@ -206,14 +206,14 @@ MObject tessendorfOcean::createMesh(const MTime& time,
     int faceResolution = vertexResolution - 1; /* Number of faces per row/col. */
     
     MFloatPointArray vertices;
-	MIntArray faceDegrees;
-	MIntArray faceVertices;
-	int i, j;
+    MIntArray faceDegrees;
+    MIntArray faceVertices;
+    int i, j;
     
-	int numFaces = faceResolution * faceResolution;
+    int numFaces = faceResolution * faceResolution;
     
-	// Scale using the current time.
-	double seconds = time.as(MTime::kSeconds);
+    // Scale using the current time.
+    double seconds = time.as(MTime::kSeconds);
     
     // Convert wind direction to a unit vector.
     double dirRadians = windDirection.asRadians();
@@ -223,52 +223,52 @@ MObject tessendorfOcean::createMesh(const MTime& time,
     tessendorf simulation(amplitude, windSpeed, dirVector, choppiness, seconds, vertexResolution, vertexResolution, planeSize, planeSize, waveSizeFilter, seed);
     MFloatPointArray simResult = simulation.simulate();
     // Set up an array containing the vertex positions for the plane. The
-	// vertices are placed equi-distant on the X-Z plane to form a square
-	// grid that has a side length of "planeSize".
-	for (i = 0; i < vertexResolution; ++i)
-	{
-		for (j = 0; j < vertexResolution; ++j)
-		{
-			MFloatPoint disp = simResult[i * vertexResolution + j];
-			vertices.append(disp);
-		}
-	}
+    // vertices are placed equi-distant on the X-Z plane to form a square
+    // grid that has a side length of "planeSize".
+    for (i = 0; i < vertexResolution; ++i)
+    {
+        for (j = 0; j < vertexResolution; ++j)
+        {
+            MFloatPoint disp = simResult[i * vertexResolution + j];
+            vertices.append(disp);
+        }
+    }
     
-	// Set up an array containing the number of vertices
-	// for each of the plane's faces.
-	for (i = 0; i < numFaces; ++i)
-	{
-		faceDegrees.append(4); // Quads, so 4 vertices per face.
-	}
+    // Set up an array containing the number of vertices
+    // for each of the plane's faces.
+    for (i = 0; i < numFaces; ++i)
+    {
+        faceDegrees.append(4); // Quads, so 4 vertices per face.
+    }
     
-	// Set up an array to assign the vertices for each face.
-	for (i = 0; i < faceResolution; ++i)
-	{
-		for (j = 0; j < faceResolution; ++j)
-		{
-			faceVertices.append((i+1) * vertexResolution + j);
-			faceVertices.append((i+1) * vertexResolution + j + 1);
-			faceVertices.append(i * vertexResolution + j + 1);
-			faceVertices.append(i * vertexResolution + j);
-		}
-	}
+    // Set up an array to assign the vertices for each face.
+    for (i = 0; i < faceResolution; ++i)
+    {
+        for (j = 0; j < faceResolution; ++j)
+        {
+            faceVertices.append((i+1) * vertexResolution + j);
+            faceVertices.append((i+1) * vertexResolution + j + 1);
+            faceVertices.append(i * vertexResolution + j + 1);
+            faceVertices.append(i * vertexResolution + j);
+        }
+    }
     
-	MFnMesh	meshFn;
-	MObject newMesh = meshFn.create(vertices.length(), numFaces, vertices,
+    MFnMesh	meshFn;
+    MObject newMesh = meshFn.create(vertices.length(), numFaces, vertices,
                                     faceDegrees, faceVertices, outData, &stat);
     
-	return newMesh;
+    return newMesh;
 }
 
 MStatus tessendorfOcean::compute(const MPlug& plug, MDataBlock& data)
 {
-	MStatus returnStatus;
+    MStatus returnStatus;
     
-	if (plug == outputMesh) {
-		// Get the time attribute.
-		MDataHandle timeData = data.inputValue(time, &returnStatus);
-		MCheckErr(returnStatus, "ERROR getting time data handle\n");
-		MTime time = timeData.asTime();
+    if (plug == outputMesh) {
+        // Get the time attribute.
+        MDataHandle timeData = data.inputValue(time, &returnStatus);
+        MCheckErr(returnStatus, "ERROR getting time data handle\n");
+        MTime time = timeData.asTime();
         
         // Get the resolution attribute.
         MDataHandle resData = data.inputValue(resolution, &returnStatus);
@@ -310,50 +310,50 @@ MStatus tessendorfOcean::compute(const MPlug& plug, MDataBlock& data)
         MCheckErr(returnStatus, "ERROR getting seed data handle\n");
         int rngSeed = seedData.asInt();
         
-		// Get the output object attribute.
-		MDataHandle outputHandle = data.outputValue(outputMesh, &returnStatus);
-		MCheckErr(returnStatus, "ERROR getting polygon data handle\n");
+        // Get the output object attribute.
+        MDataHandle outputHandle = data.outputValue(outputMesh, &returnStatus);
+        MCheckErr(returnStatus, "ERROR getting polygon data handle\n");
         
-		MFnMeshData dataCreator;
-		MObject newOutputData = dataCreator.create(&returnStatus);
-		MCheckErr(returnStatus, "ERROR creating outputData");
+        MFnMeshData dataCreator;
+        MObject newOutputData = dataCreator.create(&returnStatus);
+        MCheckErr(returnStatus, "ERROR creating outputData");
         
-		createMesh(time, res, size, wSize, amp, speed, dir, chop, rngSeed, newOutputData, returnStatus);
-		MCheckErr(returnStatus, "ERROR creating new tessendorfOcean");
+        createMesh(time, res, size, wSize, amp, speed, dir, chop, rngSeed, newOutputData, returnStatus);
+        MCheckErr(returnStatus, "ERROR creating new tessendorfOcean");
         
-		outputHandle.set(newOutputData);
-		data.setClean(plug);
-	} else
-		return MS::kUnknownParameter;
+        outputHandle.set(newOutputData);
+        data.setClean(plug);
+    } else
+        return MS::kUnknownParameter;
     
-	return MS::kSuccess;
+    return MS::kSuccess;
 }
 
 MStatus initializePlugin(MObject obj)
 {
-	MStatus   status;
-	MFnPlugin plugin(obj, PLUGIN_COMPANY, "3.0", "Any");
+    MStatus status;
+    MFnPlugin plugin(obj, PLUGIN_COMPANY, "3.0", "Any");
     
-	status = plugin.registerNode("tessendorfOcean", tessendorfOcean::id,
+    status = plugin.registerNode("tessendorfOcean", tessendorfOcean::id,
                                  tessendorfOcean::creator, tessendorfOcean::initialize);
-	if (!status) {
-		status.perror("registerNode");
-		return status;
-	}
+    if (!status) {
+        status.perror("registerNode");
+        return status;
+    }
     
-	return status;
+    return status;
 }
 
 MStatus uninitializePlugin(MObject obj)
 {
-	MStatus	  status;
-	MFnPlugin plugin(obj);
+    MStatus status;
+    MFnPlugin plugin(obj);
     
-	status = plugin.deregisterNode(tessendorfOcean::id);
-	if (!status) {
-		status.perror("deregisterNode");
-		return status;
-	}
+    status = plugin.deregisterNode(tessendorfOcean::id);
+    if (!status) {
+        status.perror("deregisterNode");
+        return status;
+    }
     
-	return status;
+    return status;
 }
