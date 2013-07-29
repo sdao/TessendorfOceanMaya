@@ -253,7 +253,7 @@ MObject tessendorfOcean::createMesh(const MTime& time,
         }
     }
     
-    MFnMesh	meshFn;
+    MFnMesh meshFn;
     MObject newMesh = meshFn.create(vertices.length(), numFaces, vertices,
                                     faceDegrees, faceVertices, outData, &stat);
     
