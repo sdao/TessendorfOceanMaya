@@ -25,24 +25,24 @@ typedef std::complex<double> complex;
  * "Simulating Ocean Waves", (c) 1999-2001 Jerry Tessendorf (SIGGRAPH Course Notes 2002).
  */
 class tessendorf {
-    double T = 240.;                /** Time of one phase of simulation (currently 4'0"). */
-    double omega_0 = 2. * M_PI / T; /** Dispersion-sub-naught; calculated using Tessendorf's equation (17). */
-    int M;                          /** Resolution of grid along X-axis (16 <= M <= 2048; where M = 2^x for integer x). */
-    int N;                          /** Resolution of grid along Z-axis (16 <= N <= 2048; where N = 2^z for integer z). */
-    double Lx;                      /** Length of plane along X-axis (in m). */
-    double Lz;                      /** Length of plane along Z-axis (in m). */
-    double l;                       /** Size limit that waves must surpass to be rendered. */
-    double A;                       /** Controls height of Phillips spectrum. */
-    double V;                       /** Wind speed (in m/s). */
-    MVector w_hat;                  /** Direction of wind. */
-    double lambda;                  /** Choppiness factor. */
-    double t;                       /** Time (in s). */
-    int seed;                       /** Seed for the pseudorandom number generator. */
+    double T = 240.;                /* Time of one phase of simulation (currently 4'0"). */
+    double omega_0 = 2. * M_PI / T; /* Dispersion-sub-naught; calculated using Tessendorf's equation (17). */
+    int M;                          /* Resolution of grid along X-axis (16 <= M <= 2048; where M = 2^x for integer x). */
+    int N;                          /* Resolution of grid along Z-axis (16 <= N <= 2048; where N = 2^z for integer z). */
+    double Lx;                      /* Length of plane along X-axis (in m). */
+    double Lz;                      /* Length of plane along Z-axis (in m). */
+    double l;                       /* Size limit that waves must surpass to be rendered. */
+    double A;                       /* Controls height of Phillips spectrum. */
+    double V;                       /* Wind speed (in m/s). */
+    MVector w_hat;                  /* Direction of wind. */
+    double lambda;                  /* Choppiness factor. */
+    double t;                       /* Time (in s). */
+    int seed;                       /* Seed for the pseudorandom number generator. */
     MFloatPointArray vertices;
     
     // Values precached on initialization.
-    double P_h__L;                  /** Precached for tessendorf::P_h. Largest possible waves arising from a continuous wind of speed V. */
-    double P_h__l_2;                /** Precached for tessendorf::P_h. Square of l (l being the wave size limit). */
+    double P_h__L;                  /* Precached for tessendorf::P_h. Largest possible waves arising from a continuous wind of speed V. */
+    double P_h__l_2;                /* Precached for tessendorf::P_h. Square of l (l being the wave size limit). */
     
 public:
     /**
