@@ -20,6 +20,9 @@ typedef std::complex<double> complex;
 
 /**
  * A class that simulates ocean waves at a given time using Tessendorf's wave equations and the FFT method.
+ *
+ * The equations referenced by the documentation comments are those in
+ * "Simulating Ocean Waves", (c) 1999-2001 Jerry Tessendorf (SIGGRAPH Course Notes 2002).
  */
 class tessendorf {
     double T = 240.;                /** Time of one phase of simulation (currently 4'0"). */
