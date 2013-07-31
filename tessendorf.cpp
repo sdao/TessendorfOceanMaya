@@ -32,6 +32,11 @@ tessendorf::tessendorf(double amplitude, double speed, MVector direction, double
     P_h__l_2 = pow(l, 2);
 }
 
+tessendorf::~tessendorf()
+{
+    vertices.setLength(0);
+}
+
 double tessendorf::omega(MVector k)
 {
     return floor(sqrt(GRAVITY * k.length()) / omega_0) * omega_0;
@@ -129,6 +134,13 @@ MFloatPointArray tessendorf::simulate()
             vertices.append(x);
         }
     }
+    
+    delete [] h_tildes_in;
+    delete [] disp_x_in;
+    delete [] disp_z_in;
+    delete [] h_tildes_out;
+    delete [] disp_x_out;
+    delete [] disp_z_out;
     
     return vertices;
 }

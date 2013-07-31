@@ -61,6 +61,8 @@ public:
      */
     tessendorf(double amplitude, double speed, MVector direction, double choppiness, double time, int resX, int resZ, double scaleX, double scaleZ, double waveSizeLimit, int rngSeed);
     
+    ~tessendorf();
+    
     /**
      * Generates the initial wave surface and performs Fast Fourier Transforms (FFTs) to calculate the displacement.
      * The main height displacement is based on the Fourier series in Tessendorf's equation (19).
